@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App-header {
+  text-align: center;
+}
+
+.header {
+  background-color: cadetblue;
+  font-size:50px;
+  padding:25px;
+  margin-bottom: 50px;
+}
+
+.to-do-list {
+  list-style-type: none;
+  margin-bottom: 40px;
+}
+
+label input {
+  margin: 10px;
+}
