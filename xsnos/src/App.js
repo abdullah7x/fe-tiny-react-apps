@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function App() {
   return (
@@ -13,12 +13,37 @@ function App() {
 }
 
 const CreateBoard = (props) => {
-  const [paragraph, setParagraph] = useState("");
-  const boxArray = ["", "", "", "", "", "", "", "", ""];
+  const [boxArray, setBoxArray] = useState([
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ]);
+  const [turn, setTurn] = useState(1);
+
+  const handleClick = (index) => {
+    setBoxArray((currArray) => {
+      const newArray = [...currArray];
+      if (turn % 2 !== 0) {
+        newArray[index] = 'X';
+      } else newArray[index] = 'O';
+      return newArray;
+    });
+    setTurn((currTurn) => {
+      const number = currTurn + 1;
+      return number;
+    });
+  };
+
   return boxArray.map((box, index) => {
     return (
-      <button className="box" key={index} onClick={() => setParagraph("X")}>
-        {paragraph}
+      <button className="box" key={index} onClick={() => handleClick(index)}>
+        {box}
       </button>
     );
   });
