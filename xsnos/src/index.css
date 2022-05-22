@@ -25,6 +25,10 @@ code {
   cursor: pointer;
 }
 
+h1 {
+  color: black;
+}
+
 /* button {
   height: 120px;
   width: 120px;
