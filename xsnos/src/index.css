@@ -14,8 +14,8 @@ code {
 
 #game-board {
   display: grid;
-  grid-template-columns: 120px 120px 120px;
-  grid-template-rows: 120px 120px 120px 20px;
+  grid-template-columns: 7em 7em 7em;
+  grid-template-rows: 7em 7em 7em;
   justify-content: center;
 }
 
@@ -27,12 +27,9 @@ code {
 
 h1 {
   color: black;
+  text-align: center;
 }
 
-/* button {
-  height: 120px;
-  width: 120px;
-  background-color: #d9d9d9;
-  border: 2px solid black;
-  cursor: pointer;
-} */
+h2 {
+  text-align: center;
+}

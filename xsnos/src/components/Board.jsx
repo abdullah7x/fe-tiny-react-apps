@@ -69,6 +69,9 @@ function Board() {
           if (n % 2 === 0) setOverMessage('Game Over: Player O wins');
           else setOverMessage('Game Over: Player X wins');
         });
+      } else if (box.every((square) => square !== '')) {
+        setGameOver(true);
+        setOverMessage("It's a draw!");
       }
       return box;
     });
@@ -76,7 +79,6 @@ function Board() {
 
   return (
     <>
-      <h1>Naughts and Crosses</h1>
       <h2>{overMessage}</h2>
       <div id="game-board">
         {boxArray.map((box, index) => {
