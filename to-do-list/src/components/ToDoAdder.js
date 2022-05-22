@@ -1,10 +1,12 @@
 const ToDoAdder = ({ setToDoList, newToDo, setNewToDo }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    setToDoList((currList) => {
-      return [...currList, newToDo];
-    });
-    setNewToDo('');
+    if (newToDo) {
+      setToDoList((currList) => {
+        return [...currList, newToDo];
+      });
+      setNewToDo('');
+    }
   };
 
   return (

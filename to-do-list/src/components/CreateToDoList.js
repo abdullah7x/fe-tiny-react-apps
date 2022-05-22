@@ -5,7 +5,7 @@ const CreateToDoList = ({ list, toDoList, setToDoList }) => {
     setToDoList(newList);
   }
 
-  return (
+  return toDoList.length ? (
     <ul className="to-do-list">
       {list.map((toDo) => {
         return (
@@ -17,6 +17,10 @@ const CreateToDoList = ({ list, toDoList, setToDoList }) => {
           </li>
         );
       })}
+    </ul>
+  ) : (
+    <ul className="to-do-list">
+      <li>You have no todos, add one below to get started!</li>
     </ul>
   );
 };
