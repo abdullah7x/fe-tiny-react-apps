@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { evaluate } from 'mathjs';
+
+// add error handling to stop user from entering two operators in a row
+// figure out how to allow user to start a sum with 0
 
 function Calculator() {
   const [answer, setAnswer] = useState('0');
-  const [buttons, setButtons] = useState([
+  const buttons = [
     'CE',
     'C',
     'Back',
@@ -23,114 +27,106 @@ function Calculator() {
     '0',
     '.',
     '=',
-  ]);
+  ];
   const handleClick = (button) => {
-    if (button === 'CE') {
-      setAnswer('0');
-    } else if (button === 'C') {
-      setAnswer('0');
-    } else if (button === 'Back') {
-      if (answer.length > 1) {
-        setAnswer((answer) => {
-          const newAnswer = answer?.slice(0, -1);
-          return newAnswer.toString();
-        });
-      }
-    } else if (button === '+/-') {
-      setAnswer((answer) => {
-        // turn number into a negative number
-
-        // if there is a / or X, only turn the number after it negative
-        if (answer?.includes('/')) {
-          const arrayAnswer = answer.split('');
+    setAnswer((currAnswer) => {
+      const newAnswer = currAnswer;
+      if (button === 'CE') {
+        return '0';
+      } else if (button === 'C') {
+        return '0';
+      } else if (button === 'Back') {
+        if (newAnswer.length > 1) {
+          return newAnswer.slice(0, -1);
+        } else return '0';
+      } else if (button === '+/-') {
+        const divideCheck = newAnswer.lastIndexOf('/');
+        const multiplyCheck = newAnswer.lastIndexOf('*');
+        const subtractCheck = newAnswer.lastIndexOf('-');
+        const addCheck = newAnswer.lastIndexOf('+');
+        if (
+          divideCheck > multiplyCheck &&
+          divideCheck > subtractCheck &&
+          divideCheck > addCheck
+        ) {
+          const arrayAnswer = newAnswer.split('');
           const lastIndex = arrayAnswer.lastIndexOf('/');
+          if (arrayAnswer[lastIndex + 1] === '-') {
+            delete arrayAnswer[lastIndex + 1];
+          } else {
+            arrayAnswer.splice(lastIndex + 1, 0, '-');
+          }
+          return arrayAnswer.join('');
+        } else if (
+          multiplyCheck > divideCheck &&
+          multiplyCheck > subtractCheck &&
+          multiplyCheck > addCheck
+        ) {
+          const arrayAnswer = newAnswer.split('');
+          const lastIndex = arrayAnswer.lastIndexOf('*');
           if (arrayAnswer[lastIndex + 1] === '-') {
             delete arrayAnswer[lastIndex + 1];
             return arrayAnswer.join('');
           } else {
             arrayAnswer.splice(lastIndex + 1, 0, '-');
-            const newAnswer = arrayAnswer.join('');
-            return newAnswer;
           }
-        } else if (answer?.includes('*')) {
-          const arrayAnswer = answer.split('');
-          const lastIndex = arrayAnswer.lastIndexOf('*');
-          arrayAnswer.splice(lastIndex + 1, 0, '-');
-          const newAnswer = arrayAnswer.join('');
-          return newAnswer;
-        } else if (answer?.includes('-')) {
-          const arrayAnswer = answer.split('');
+          return arrayAnswer.join('');
+        } else if (
+          subtractCheck > divideCheck &&
+          subtractCheck > multiplyCheck &&
+          subtractCheck > addCheck
+        ) {
+          const arrayAnswer = newAnswer.split('');
           const lastIndex = arrayAnswer.lastIndexOf('-');
-          if (lastIndex !== 0) {
-            arrayAnswer.splice(lastIndex + 1, 0, '-');
-            const newAnswer = arrayAnswer.join('');
-            return newAnswer;
-          } else {
+          if (lastIndex === 0) {
+            return arrayAnswer.slice(1).join('');
+          } else if (arrayAnswer[lastIndex + 1] === '-') {
+            delete arrayAnswer[lastIndex + 1];
+          } else if (
+            arrayAnswer[lastIndex - 1] === '-' ||
+            arrayAnswer[lastIndex - 1] === '*' ||
+            arrayAnswer[lastIndex - 1] === '+' ||
+            arrayAnswer[lastIndex - 1] === '/'
+          ) {
             delete arrayAnswer[lastIndex];
-            return arrayAnswer.join('');
-          }
-        } else {
-          if (answer[0] === '-') {
-            const newAnswer = answer.slice(1);
-            return newAnswer;
           } else {
-            const newAnswer = answer * -1;
-            return newAnswer.toString();
+            arrayAnswer.splice(lastIndex + 1, 0, '-');
           }
+          return arrayAnswer.join('');
+        } else if (
+          addCheck > divideCheck &&
+          addCheck > multiplyCheck &&
+          addCheck > subtractCheck
+        ) {
+          const arrayAnswer = newAnswer.split('');
+          const lastIndex = arrayAnswer.lastIndexOf('+');
+          if (arrayAnswer[lastIndex + 1] === '-') {
+            delete arrayAnswer[lastIndex + 1];
+          } else {
+            arrayAnswer.splice(lastIndex + 1, 0, '-');
+          }
+          return arrayAnswer.join('');
+        } else {
+          const sum = newAnswer * -1;
+          return sum.toString();
         }
-      });
-    } else if (button === '=') {
-      setAnswer((answer) => {
-        const newAnswer = eval(answer);
-        return newAnswer.toString();
-      });
-    } else if (button === '+') {
-      setAnswer((answer) => {
-        const newAnswer = answer + '+';
-        return newAnswer;
-      });
-    } else if (button === '-') {
-      setAnswer((answer) => {
-        if (answer === 0) {
-          const newAnswer = '-';
+      } else if (button === '=') {
+        const sum = evaluate(newAnswer);
+        return sum?.toString();
+      } else if (button === 'X') {
+        return newAnswer + '*';
+      } else if (button === '.') {
+        if (newAnswer.includes('.')) {
           return newAnswer;
         } else {
-          const newAnswer = answer + '-';
-          return newAnswer;
+          return newAnswer + '.';
         }
-      });
-    } else if (button === 'X') {
-      setAnswer((answer) => {
-        const newAnswer = answer + '*';
-        return newAnswer;
-      });
-    } else if (button === '/') {
-      setAnswer((answer) => {
-        const newAnswer = answer + '/';
-        return newAnswer;
-      });
-    } else if (button === '.') {
-      setAnswer((answer) => {
-        const newAnswer = answer + '.';
-        return newAnswer;
-      });
-    } else if (button === 0) {
-      setAnswer((answer) => {
-        const newAnswer = answer * 10;
-        return newAnswer;
-      });
-    } else {
-      setAnswer((answer) => {
-        if (answer === 0) {
-          return button;
-        } else {
-          const newAnswer = answer + button;
-          return newAnswer;
-        }
-      });
-    }
+      } else {
+        return newAnswer + button;
+      }
+    });
     setAnswer((currAnswer) => {
-      if (currAnswer[0] === '0') {
+      if (currAnswer !== '0' && currAnswer[0] === '0') {
         const newAnswer = currAnswer?.slice(1);
         return newAnswer;
       } else return currAnswer;
