@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function Calculator() {
-  const [answer, setAnswer] = useState(0);
+  const [answer, setAnswer] = useState('0');
   const [buttons, setButtons] = useState([
     'CE',
     'C',
@@ -26,14 +26,14 @@ function Calculator() {
   ]);
   const handleClick = (button) => {
     if (button === 'CE') {
-      setAnswer(0);
+      setAnswer('0');
     } else if (button === 'C') {
-      setAnswer(0);
+      setAnswer('0');
     } else if (button === 'Back') {
       if (answer.length > 1) {
         setAnswer((answer) => {
           const newAnswer = answer?.slice(0, -1);
-          return newAnswer;
+          return newAnswer.toString();
         });
       }
     } else if (button === '+/-') {
@@ -44,9 +44,14 @@ function Calculator() {
         if (answer?.includes('/')) {
           const arrayAnswer = answer.split('');
           const lastIndex = arrayAnswer.lastIndexOf('/');
-          arrayAnswer.splice(lastIndex + 1, 0, '-');
-          const newAnswer = arrayAnswer.join('');
-          return newAnswer;
+          if (arrayAnswer[lastIndex + 1] === '-') {
+            delete arrayAnswer[lastIndex + 1];
+            return arrayAnswer.join('');
+          } else {
+            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            const newAnswer = arrayAnswer.join('');
+            return newAnswer;
+          }
         } else if (answer?.includes('*')) {
           const arrayAnswer = answer.split('');
           const lastIndex = arrayAnswer.lastIndexOf('*');
@@ -60,16 +65,24 @@ function Calculator() {
             arrayAnswer.splice(lastIndex + 1, 0, '-');
             const newAnswer = arrayAnswer.join('');
             return newAnswer;
-          } else return answer;
+          } else {
+            delete arrayAnswer[lastIndex];
+            return arrayAnswer.join('');
+          }
         } else {
-          const newAnswer = answer * -1;
-          return newAnswer.toString();
+          if (answer[0] === '-') {
+            const newAnswer = answer.slice(1);
+            return newAnswer;
+          } else {
+            const newAnswer = answer * -1;
+            return newAnswer.toString();
+          }
         }
       });
     } else if (button === '=') {
       setAnswer((answer) => {
         const newAnswer = eval(answer);
-        return newAnswer;
+        return newAnswer.toString();
       });
     } else if (button === '+') {
       setAnswer((answer) => {
@@ -116,6 +129,12 @@ function Calculator() {
         }
       });
     }
+    setAnswer((currAnswer) => {
+      if (currAnswer[0] === '0') {
+        const newAnswer = currAnswer?.slice(1);
+        return newAnswer;
+      } else return currAnswer;
+    });
   };
 
   return (
