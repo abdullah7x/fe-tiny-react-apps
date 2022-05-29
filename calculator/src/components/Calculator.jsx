@@ -7,20 +7,20 @@ function Calculator() {
     'C',
     'Back',
     '/',
-    7,
-    8,
-    9,
+    '7',
+    '8',
+    '9',
     'X',
-    4,
-    5,
-    6,
+    '4',
+    '5',
+    '6',
     '-',
-    1,
-    2,
-    3,
+    '1',
+    '2',
+    '3',
     '+',
-    'plus/minus',
-    0,
+    '+/-',
+    '0',
     '.',
     '=',
   ]);
@@ -30,11 +30,13 @@ function Calculator() {
     } else if (button === 'C') {
       setAnswer(0);
     } else if (button === 'Back') {
-      setAnswer((answer) => {
-        const newAnswer = answer.slice(0, -1);
-        return newAnswer;
-      });
-    } else if (button === 'plus/minus') {
+      if (answer.length > 1) {
+        setAnswer((answer) => {
+          const newAnswer = answer?.slice(0, -1);
+          return newAnswer;
+        });
+      }
+    } else if (button === '+/-') {
       setAnswer((answer) => {
         const newAnswer = answer * -1;
         return newAnswer;
@@ -51,8 +53,13 @@ function Calculator() {
       });
     } else if (button === '-') {
       setAnswer((answer) => {
-        const newAnswer = answer + '-';
-        return newAnswer;
+        if (answer === 0) {
+          const newAnswer = '-';
+          return newAnswer;
+        } else {
+          const newAnswer = answer + '-';
+          return newAnswer;
+        }
       });
     } else if (button === 'X') {
       setAnswer((answer) => {
@@ -76,8 +83,12 @@ function Calculator() {
       });
     } else {
       setAnswer((answer) => {
-        const newAnswer = answer + button;
-        return newAnswer;
+        if (answer === 0) {
+          return button;
+        } else {
+          const newAnswer = answer + button;
+          return newAnswer;
+        }
       });
     }
   };
