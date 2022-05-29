@@ -38,8 +38,33 @@ function Calculator() {
       }
     } else if (button === '+/-') {
       setAnswer((answer) => {
-        const newAnswer = answer * -1;
-        return newAnswer;
+        // turn number into a negative number
+
+        // if there is a / or X, only turn the number after it negative
+        if (answer?.includes('/')) {
+          const arrayAnswer = answer.split('');
+          const lastIndex = arrayAnswer.lastIndexOf('/');
+          arrayAnswer.splice(lastIndex + 1, 0, '-');
+          const newAnswer = arrayAnswer.join('');
+          return newAnswer;
+        } else if (answer?.includes('*')) {
+          const arrayAnswer = answer.split('');
+          const lastIndex = arrayAnswer.lastIndexOf('*');
+          arrayAnswer.splice(lastIndex + 1, 0, '-');
+          const newAnswer = arrayAnswer.join('');
+          return newAnswer;
+        } else if (answer?.includes('-')) {
+          const arrayAnswer = answer.split('');
+          const lastIndex = arrayAnswer.lastIndexOf('-');
+          if (lastIndex !== 0) {
+            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            const newAnswer = arrayAnswer.join('');
+            return newAnswer;
+          } else return answer;
+        } else {
+          const newAnswer = answer * -1;
+          return newAnswer.toString();
+        }
       });
     } else if (button === '=') {
       setAnswer((answer) => {
