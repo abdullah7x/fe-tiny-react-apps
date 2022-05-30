@@ -33,4 +33,4 @@ note: `V17` is the minimum version of node required to run this project locally.
 
 ## Feedback
 
-If you have any feedback or any questions, please feel free to contact me at [abdullah.ahmed7x@gmail.com](mailto:abdullah.ahmed7x@gmail.com).
+If you have any feedback or questions, please feel free to contact me at [abdullah.ahmed7x@gmail.com](mailto:abdullah.ahmed7x@gmail.com).
