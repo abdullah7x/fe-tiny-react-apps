@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { evaluate } from 'mathjs';
 
 // add error handling to stop user from entering two operators in a row
-// figure out how to allow user to start a sum with 0
 
 function Calculator() {
   const [answer, setAnswer] = useState('0');
@@ -126,6 +125,15 @@ function Calculator() {
       }
     });
     setAnswer((currAnswer) => {
+      if (
+        currAnswer.startsWith('0/') ||
+        currAnswer.startsWith('0*') ||
+        currAnswer.startsWith('0-') ||
+        currAnswer.startsWith('0+') ||
+        currAnswer.startsWith('0.')
+      ) {
+        return currAnswer;
+      }
       if (currAnswer !== '0' && currAnswer[0] === '0') {
         const newAnswer = currAnswer?.slice(1);
         return newAnswer;
