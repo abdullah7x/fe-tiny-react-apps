@@ -6,7 +6,10 @@ Following the conclusion of my bootcamp experience with Northcoders I realised I
 
 So far, I have completed a to-do-list, noughts and crosses game and a calculator app.
 
-## Running the apps
+## Running the apps locally
+
+1. Clone this repository using `git clone https://github.com/abdullah7x/fe-tiny-react-apps.git`
+2. `cd fe-tiny-react-apps`
 
 Navigate into the app you wish to run, for example:
 
@@ -25,6 +28,8 @@ Open up the app in your browser:
 ```
 npm start
 ```
+
+note: `V17` is the minimum version of node required to run this project locally.
 
 ## Feedback
 
