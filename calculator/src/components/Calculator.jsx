@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { evaluate } from 'mathjs';
 
-// add error handling to stop user from entering two operators in a row
-
 function Calculator() {
   const [answer, setAnswer] = useState('0');
   const buttons = [
-    'CE',
-    'C',
+    'AC',
+    '%',
     'Back',
     '/',
     '7',
@@ -30,9 +28,7 @@ function Calculator() {
   const handleClick = (button) => {
     setAnswer((currAnswer) => {
       const newAnswer = currAnswer;
-      if (button === 'CE') {
-        return '0';
-      } else if (button === 'C') {
+      if (button === 'AC') {
         return '0';
       } else if (button === 'Back') {
         if (newAnswer.length > 1) {
@@ -43,17 +39,31 @@ function Calculator() {
         const multiplyCheck = newAnswer.lastIndexOf('*');
         const subtractCheck = newAnswer.lastIndexOf('-');
         const addCheck = newAnswer.lastIndexOf('+');
+        const percentageCheck = newAnswer.lastIndexOf('%');
+        if (
+          percentageCheck > divideCheck &&
+          percentageCheck > multiplyCheck &&
+          percentageCheck > subtractCheck &&
+          percentageCheck > addCheck
+        ) {
+          const arrayAnswer = newAnswer.split('');
+          if (arrayAnswer[percentageCheck + 1 === '-']) {
+            delete arrayAnswer[percentageCheck + 1];
+          } else {
+            arrayAnswer.splice(percentageCheck + 1, 0, '-');
+          }
+          return arrayAnswer.join('');
+        }
         if (
           divideCheck > multiplyCheck &&
           divideCheck > subtractCheck &&
           divideCheck > addCheck
         ) {
           const arrayAnswer = newAnswer.split('');
-          const lastIndex = arrayAnswer.lastIndexOf('/');
-          if (arrayAnswer[lastIndex + 1] === '-') {
-            delete arrayAnswer[lastIndex + 1];
+          if (arrayAnswer[divideCheck + 1] === '-') {
+            delete arrayAnswer[divideCheck + 1];
           } else {
-            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            arrayAnswer.splice(divideCheck + 1, 0, '-');
           }
           return arrayAnswer.join('');
         } else if (
@@ -62,12 +72,11 @@ function Calculator() {
           multiplyCheck > addCheck
         ) {
           const arrayAnswer = newAnswer.split('');
-          const lastIndex = arrayAnswer.lastIndexOf('*');
-          if (arrayAnswer[lastIndex + 1] === '-') {
-            delete arrayAnswer[lastIndex + 1];
+          if (arrayAnswer[multiplyCheck + 1] === '-') {
+            delete arrayAnswer[multiplyCheck + 1];
             return arrayAnswer.join('');
           } else {
-            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            arrayAnswer.splice(multiplyCheck + 1, 0, '-');
           }
           return arrayAnswer.join('');
         } else if (
@@ -76,20 +85,19 @@ function Calculator() {
           subtractCheck > addCheck
         ) {
           const arrayAnswer = newAnswer.split('');
-          const lastIndex = arrayAnswer.lastIndexOf('-');
-          if (lastIndex === 0) {
+          if (subtractCheck === 0) {
             return arrayAnswer.slice(1).join('');
-          } else if (arrayAnswer[lastIndex + 1] === '-') {
-            delete arrayAnswer[lastIndex + 1];
+          } else if (arrayAnswer[subtractCheck + 1] === '-') {
+            delete arrayAnswer[<sub></sub> + 1];
           } else if (
-            arrayAnswer[lastIndex - 1] === '-' ||
-            arrayAnswer[lastIndex - 1] === '*' ||
-            arrayAnswer[lastIndex - 1] === '+' ||
-            arrayAnswer[lastIndex - 1] === '/'
+            arrayAnswer[subtractCheck - 1] === '-' ||
+            arrayAnswer[subtractCheck - 1] === '*' ||
+            arrayAnswer[subtractCheck - 1] === '+' ||
+            arrayAnswer[subtractCheck - 1] === '/'
           ) {
-            delete arrayAnswer[lastIndex];
+            delete arrayAnswer[subtractCheck];
           } else {
-            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            arrayAnswer.splice(subtractCheck + 1, 0, '-');
           }
           return arrayAnswer.join('');
         } else if (
@@ -98,11 +106,10 @@ function Calculator() {
           addCheck > subtractCheck
         ) {
           const arrayAnswer = newAnswer.split('');
-          const lastIndex = arrayAnswer.lastIndexOf('+');
-          if (arrayAnswer[lastIndex + 1] === '-') {
-            delete arrayAnswer[lastIndex + 1];
+          if (arrayAnswer[addCheck + 1] === '-') {
+            delete arrayAnswer[addCheck + 1];
           } else {
-            arrayAnswer.splice(lastIndex + 1, 0, '-');
+            arrayAnswer.splice(addCheck + 1, 0, '-');
           }
           return arrayAnswer.join('');
         } else {
@@ -115,7 +122,19 @@ function Calculator() {
       } else if (button === 'X') {
         return newAnswer + '*';
       } else if (button === '.') {
-        if (newAnswer.includes('.')) {
+        let decimalCounter = 0;
+        for (let i = 0; i < newAnswer.length; i++) {
+          if (newAnswer[i] === '.') decimalCounter = 1;
+          if (
+            newAnswer[i] === '+' ||
+            newAnswer[i] === '-' ||
+            newAnswer[i] === '*' ||
+            newAnswer[i] === '/'
+          ) {
+            decimalCounter = 0;
+          }
+        }
+        if (decimalCounter === 1) {
           return newAnswer;
         } else {
           return newAnswer + '.';
@@ -126,11 +145,21 @@ function Calculator() {
     });
     setAnswer((currAnswer) => {
       if (
+        currAnswer.endsWith('++') ||
+        currAnswer.endsWith('---') ||
+        currAnswer.endsWith('**') ||
+        currAnswer.endsWith('//') ||
+        currAnswer.endsWith('%%')
+      ) {
+        return currAnswer.slice(0, -1);
+      }
+      if (
         currAnswer.startsWith('0/') ||
         currAnswer.startsWith('0*') ||
         currAnswer.startsWith('0-') ||
         currAnswer.startsWith('0+') ||
-        currAnswer.startsWith('0.')
+        currAnswer.startsWith('0.') ||
+        currAnswer.startsWith('0%')
       ) {
         return currAnswer;
       }

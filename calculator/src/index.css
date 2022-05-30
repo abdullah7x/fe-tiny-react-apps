@@ -15,10 +15,10 @@ code {
 .calculator {
   display: grid;
   width: 90%;
-  height: 90vh;
+  height: 100vh;
   margin: 0 auto;
+  background-color: #333;
   border: 5px solid orange;
-  background-color: black;
 }
 
 .calculator-display {
@@ -29,6 +29,10 @@ code {
   align-items: center;
   color: white;
   font-size: 5rem;
+  text-align: center;
+  word-break: keep-all;
+  overflow: auto;
+  padding: 1rem;
 }
 
 .calculator-buttons {
@@ -38,4 +42,8 @@ code {
   grid-gap: 5px;
   justify-content: center;
   align-items: center;
+}
+
+button {
+  height: 3em;
 }
