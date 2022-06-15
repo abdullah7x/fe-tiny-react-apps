@@ -2,7 +2,7 @@
 
 ## Background
 
-Following the conclusion of my bootcamp experience with Northcoders I realised I needed to keep my React, CSS, JavaScript, logical thinking and problem solving skills sharp. I also could not start a huge project as so much of my time is invested in job hunting and also in learning a new language. Therefore, I decided to make use of a repository that was created for us by the bootcamp to work on mini-apps each weekend. Due to time constraints, the focus of these apps is on functionality first and design second.
+Following the conclusion of my bootcamp experience with Northcoders I realised I needed to keep my React, CSS, JavaScript, logical thinking and problem solving skills sharp. I also could not start a huge project as so much of my time is invested in job hunting and also in learning a new language. Therefore, I decided to make use of a repository that was created for us by the bootcamp to work on mini-apps. Due to time constraints, the focus of these apps is on functionality first and design second.
 
 So far, I have completed a to-do-list, noughts and crosses game and a calculator app.
 
